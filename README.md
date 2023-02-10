@@ -26,7 +26,7 @@ local experiments. Lastly, we will use CML to take our model training online.
 
 ## Getting started
 
-1. Clone the repository to your local environment.
+1. Fork the repository and clone it to your local environment.
 
 2. Create a new virtual environment with `virtualenv -p python3 .venv`
 
@@ -48,7 +48,7 @@ the appropriate requirements when you are using a Mac with an M1 CPU or later.
 In case you are using a different system, you will need to replace these with
 `tensorflow`.
 
-## Workshop
+## Workshop - part 1
 
 Now that we have the notebook up and running, go through the cells to see if
 everything works. If it does, you should get a model that generates predictions
@@ -170,4 +170,34 @@ If you want to move beyond the command line for your experiments, take a look at
 [the DVC extension for Visual Studio
 Code](https://marketplace.visualstudio.com/items?itemName=Iterative.dvc).
 
-# CML
+## Workshop - part 2
+
+Now that we can run experiments with our pipeline, let's take our model training
+to the cloud! For this second part, we'll be using [CML](https://cml.dev), which
+utilizes GitHub Actions (GitLab and Bitbucket equivalents also work).
+
+1. Navigate to your repository on GitHub and enable Actions from the settings.
+2. Create a `.github/workflows` directory in your project root.
+3. Create a `workflow.yaml` in the newly created directory and start with a
+   basic template:
+
+   ```yaml
+   name: CML
+   on: [push, workflow_dispatch]
+   jobs:
+   train-and-report:
+      runs-on: ubuntu-latest
+      container: docker://ghcr.io/iterative/cml:0-dvc2-base1
+      steps:
+         - uses: actions/checkout@v3
+         - run: |
+            echo "The workflow is working!"
+
+   ```
+
+4. Add the environment variables CML will need to retrieve the datasets from
+   your DVC remote to your GitHub secrets.
+5. Adapt the workflow to run `dvc repo` and publish the results as a PR. [See an
+   example
+   here](https://github.com/iterative/cml_dvc_case/blob/master/.github/workflows/cml.yaml).
+
