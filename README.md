@@ -72,10 +72,10 @@ Now that the data is part of the DVC cache, we can set up a remote for
 duplicating it. Just like we `git push` our local Git repository to GitHub,
 Gitlab, etc., we can then `dvc push` our cache to the remote.
 
-3. Use `dvc remote add` to add your remote of choice
+5. Use `dvc remote add` to add your remote of choice
    ([docs](https://dvc.org/doc/command-reference/remote/add))
    
-4. Push the DVC cache to your remote with `dvc push`
+6. Push the DVC cache to your remote with `dvc push`
 
 ### Create `params.yaml`
 
@@ -109,11 +109,11 @@ case, we will create four stages: `data-preprocess`, `data_load`, `train`, and
 `test`.
 
 1. Create an `src` directory to move the modules to.
-1. Create a `.py` file in the `src` directory for every pipeline step (e.g.
+2. Create a `.py` file in the `src` directory for every pipeline step (e.g.
    `train.py`)
-1. Copy the relevant code over to each module. Make sure to also include the
+3. Copy the relevant code over to each module. Make sure to also include the
    imports needed in each section.
-1. Create a `main` function so that we can call the module using a command.
+4. Create a `main` function so that we can call the module using a command.
    We'll use `argparse` so that we can pass our parameters:
 
   ```python
@@ -127,7 +127,7 @@ case, we will create four stages: `data-preprocess`, `data_load`, `train`, and
           params = yaml.safe_load(param_file)
   ```
 
-1. Replace hardcoded parameters with references to `params.yaml`, for example:
+5. Replace hardcoded parameters with references to `params.yaml`, for example:
 
   ```python
   MODEL_LEARNING_RATE: float = params['train']['learning_rate']
