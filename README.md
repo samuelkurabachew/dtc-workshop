@@ -1,9 +1,15 @@
-# Jupyter Notebook for Pokémon type classifier 
+# [Data Talks Club] GitOps for ML: Converting Notebooks to Reproducible Pipelines
 
-This Jupyter Notebook trains a CNN to classify images of Pokémon. It will
-predict whether a Pokémon is of a predetermined type (default: water). It is a
-starting point that shows how a notebook might look before it is transformed
-into a DVC pipeline.
+In this hands-on workshop, we’ll take a prototype in a Jupyter Notebook and
+transform it into a DVC pipeline. We’ll then use that pipeline locally to run
+and compare a few experiments. Lastly, we’ll explore how CML will allow us to
+take our model training online. We’ll use it in conjunction with GitHub Actions
+to trigger our model training every time we push changes to our repository.
+
+As an example project we'll use a Jupyter Notebook that trains a CNN to classify
+images of Pokémon. It will predict whether a Pokémon is of a predetermined type
+(default: water). It is a starting point that shows how a notebook might look
+before it is transformed into a DVC pipeline.
 
 It is a fork of this example project:
 https://github.com/iterative/example-pokemon-classifier
@@ -12,21 +18,15 @@ _Note: due to the limited size of the dataset, the evaluation dataset is the
 same data set as the train+test. Take the results of the model with a grain of
 salt._
 
-## Workshop: from notebook to pipeline
-
-In this workshop for Data Talks Club, we will go through the notebook and
-transform it into a DVC pipeline. We will then use the pipeline to run some
-local experiments. Lastly, we will use CML to take our model training online.
-
-## Requirements
+### Requirements
 
 - [Python >= 3.9.13](https://www.python.org/downloads/)
 - [Virtualenv >=
   20.14.1](https://virtualenv.pypa.io/en/latest/installation.html)
 
-## Getting started
+### Getting started
 
-1. Fork the repository and clone it to your local environment.
+1. Fork the repository and clone it to your local environment
 
 2. Create a new virtual environment with `virtualenv -p python3 .venv`
 
@@ -34,14 +34,15 @@ local experiments. Lastly, we will use CML to take our model training online.
 
 4. Install the dependencies with `pip install -r requirements.txt`
 
-5. Download the datasets from Kaggle into the `data/external/` directory.
+5. Download the datasets from Kaggle into the `data/external/` directory
 
    - [data/external/pokemon-gen-1-8](https://www.kaggle.com/datasets/robdewit/pokemon-images)
    - [data/external/stats/pokemon-gen-1-8.csv](https://www.kaggle.com/datasets/rounakbanik/pokemon)
 
-8. Launch the Notebook with `jupyter-notebook`
+8. Launch the notebook with `jupyter-notebook` and open
+   `pokemon_classifier.ipynb`
 
-## Notes on hardware
+### Notes on hardware
 
 The requirements specify `tensorflow-macos` and `tensorflow-metal`, which are
 the appropriate requirements when you are using a Mac with an M1 CPU or later.
@@ -52,7 +53,7 @@ In case you are using a different system, you will need to replace these with
 
 Now that we have the notebook up and running, go through the cells to see if
 everything works. If it does, you should get a model that generates predictions
-for all Pokémon images.
+for all Pokémon images. Although admittedly the model performance isn't great...
 
 This point may be familiar to you: a working prototype in a notebook. Now, how
 do we transform it into a reproducible DVC pipeline?
@@ -60,14 +61,21 @@ do we transform it into a reproducible DVC pipeline?
 ### Setting up DVC and tracking data
 
 1. Initialize DVC with `dvc init`
-2. Start tracking the `data` and `outputs` directories with DVC (`dvc add`).
+2. Start tracking the `data` and `outputs` directories with DVC (`dvc add`)
+3. Poke around with `git status` and see what DVC did in the background. Take a
+   look at `data.dvc` or `outputs.dvc` to see the metadata files thta DVC
+   created
+4. Commit the changes to Git (`git commit -m "Start tracking data and outputs
+   directories with DVC"`)
 
 Now that the data is part of the DVC cache, we can set up a remote for
 duplicating it. Just like we `git push` our local Git repository to GitHub,
 Gitlab, etc., we can then `dvc push` our cache to the remote.
 
 3. Use `dvc remote add` to add your remote of choice
-   ([docs](https://dvc.org/doc/command-reference/remote/add)).
+   ([docs](https://dvc.org/doc/command-reference/remote/add))
+   
+4. Push the DVC cache to your remote with `dvc push`
 
 ### Create `params.yaml`
 
