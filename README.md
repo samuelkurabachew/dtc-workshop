@@ -105,8 +105,8 @@ train:
 
 Now it is time to move out of our familiar notebook environment. We will split
 up the notebook into units that make sense as a step in a pipeline. In this
-case, we will create four stages: `data-preprocess`, `data_load`, `train`, and
-`test`.
+case, we will create four stages: `data_preprocess`, `data_load`, `train`, and
+`evaluate`.
 
 1. Create an `src` directory for the modules
 2. Create a `.py` file in the `src` directory for every pipeline step (e.g.
