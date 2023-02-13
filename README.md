@@ -36,7 +36,7 @@ salt._
 
 5. Download the datasets from Kaggle into the `data/external/` directory
 
-   - [data/external/pokemon-gen-1-8](https://www.kaggle.com/datasets/robdewit/pokemon-images)
+   - [data/external/images](https://www.kaggle.com/datasets/robdewit/pokemon-images)
    - [data/external/stats/pokemon-gen-1-8.csv](https://www.kaggle.com/datasets/rounakbanik/pokemon)
 
 8. Launch the notebook with `jupyter-notebook` and open
@@ -92,7 +92,7 @@ data_preprocess:
   source_directory: 'data/external'
   destination_directory: 'data/processed'
   dataset_labels: 'stats/pokemon-gen-1-8.csv'
-  dataset_images: 'images-gen-1-8'
+  dataset_images: 'images'
 
 train:
   test_size: 0.2
@@ -108,15 +108,19 @@ up the notebook into units that make sense as a step in a pipeline. In this
 case, we will create four stages: `data-preprocess`, `data_load`, `train`, and
 `test`.
 
-1. Create an `src` directory to move the modules to.
+1. Create an `src` directory for the modules
 2. Create a `.py` file in the `src` directory for every pipeline step (e.g.
    `train.py`)
-3. Copy the relevant code over to each module. Make sure to also include the
+3. For convenience, also create `src/utils/find_project_root.py` ([like
+   so](https://github.com/iterative/example-pokemon-classifier/blob/main/src/utils/find_project_root.py)).
+4. Copy the relevant code over to each module. Make sure to also include the
    imports needed in each section.
-4. Create a `main` function so that we can call the module using a command.
+5. Create a `main` function so that we can call the module using a command.
    We'll use `argparse` so that we can pass our parameters:
 
   ```python
+  import argparse
+  ...
   if __name__ == '__main__':
 
       args_parser = argparse.ArgumentParser()
@@ -125,21 +129,8 @@ case, we will create four stages: `data-preprocess`, `data_load`, `train`, and
 
       with open(args.params) as param_file:
           params = yaml.safe_load(param_file)
-  ```
-
-5. Replace hardcoded parameters with references to `params.yaml`, for example:
-
-  ```python
-  MODEL_LEARNING_RATE: float = params['train']['learning_rate']
-  MODEL_EPOCHS: int = params['train']['epochs']
-  MODEL_BATCH_SIZE: int = params['train']['batch_size']
-  ...
-  estimator = model.fit(X_train, y_train, 
-                        validation_data=(X_test, y_test),
-                        class_weight= calculate_class_weights(y_train),
-                        epochs=MODEL_EPOCHS, 
-                        batch_size=MODEL_BATCH_SIZE,
-                        verbose=1)
+          
+      PROJECT_ROOT = find_project_root()
   ```
 
 Once we're done, we should be able to run the module from your command line:
