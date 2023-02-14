@@ -61,12 +61,12 @@ do we transform it into a reproducible DVC pipeline?
 ### Setting up DVC and tracking data
 
 1. Initialize DVC with `dvc init`
-2. Start tracking the `data` and `outputs` directories with DVC (`dvc add`)
+2. Start tracking the `data/external` directory with DVC (`dvc add`)
 3. Poke around with `git status` and see what DVC did in the background. Take a
-   look at `data.dvc` or `outputs.dvc` to see the metadata files thta DVC
+   look at `data/external.dvc` to see the metadata file that DVC
    created
-4. Commit the changes to Git (`git commit -m "Start tracking data and outputs
-   directories with DVC"`)
+4. Commit the changes to Git (`git commit -m "Start tracking data
+   directory with DVC"`)
 
 Now that the data is part of the DVC cache, we can set up a remote for
 duplicating it. Just like we `git push` our local Git repository to GitHub,
@@ -147,7 +147,7 @@ single command.
 
 1. Create a `dvc.yaml` file and set up the stages, their dependencies, and
    outputs
-   ([docs](https://dvc.org/doc/user-guide/project-structure/dvcyaml-files#stages)).
+   ([docs](https://dvc.org/doc/user-guide/project-structure/dvcyaml-files#stages))
 1. Reproduce the pipeline with `dvc repro`.
 
 [If you'd like an example, check my implementation for `dvc.yaml`
