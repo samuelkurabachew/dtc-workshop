@@ -206,8 +206,8 @@ Now that we can run experiments with our pipeline, let's take our model training
 to the cloud! For this second part, we'll be using [CML](https://cml.dev), which
 utilizes GitHub Actions (GitLab and Bitbucket equivalents also work).
 
-1. Navigate to your repository on GitHub and enable Actions from the settings.
-2. Create a `.github/workflows` directory in your project root.
+1. Navigate to your repository on GitHub and enable Actions from the settings
+2. Create a `.github/workflows` directory in your project root
 3. Create a `workflow.yaml` in the newly created directory and start with a
    basic template:
 
@@ -215,19 +215,25 @@ utilizes GitHub Actions (GitLab and Bitbucket equivalents also work).
    name: CML
    on: [push, workflow_dispatch]
    jobs:
-   train-and-report:
-      runs-on: ubuntu-latest
-      container: docker://ghcr.io/iterative/cml:0-dvc2-base1
-      steps:
-         - uses: actions/checkout@v3
-         - run: |
-            echo "The workflow is working!"
+       train-and-report:
+          runs-on: ubuntu-latest
+          container: docker://ghcr.io/iterative/cml:0-dvc2-base1
+          steps:
+             - uses: actions/checkout@v3
+             - run: |
+                echo "The workflow is working!"
 
    ```
+4. Create a personal access token for the GitHub repository and add it as an environment variable to your secrets ([docs](https://cml.dev/doc/self-hosted-runners?tab=GitHub#personal-access-token))
+5. Add any other environment variables CML will need to retrieve the datasets from
+   your DVC remote to your GitHub secrets (such as `AWS_ACCES_KEY_ID` and `AWS_SECRET_ACCESS_KEY` for an S3 remote).
 
-4. Add the environment variables CML will need to retrieve the datasets from
-   your DVC remote to your GitHub secrets.
-5. Adapt the workflow to run `dvc repo` and publish the results as a PR. [See an
+    ```yaml
+    env:
+        repo_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+    ```
+
+6. Adapt the workflow to run `dvc repo` and publish the results as a PR. [See an
    example
    here](https://github.com/iterative/cml_dvc_case/blob/master/.github/workflows/cml.yaml).
 
