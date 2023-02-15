@@ -63,10 +63,9 @@ do we transform it into a reproducible DVC pipeline?
 1. Initialize DVC with `dvc init`
 2. Start tracking the `data/external` directory with DVC (`dvc add`)
 3. Poke around with `git status` and see what DVC did in the background. Take a
-   look at `data/external.dvc` to see the metadata file that DVC
-   created
-4. Commit the changes to Git (`git commit -m "Start tracking data
-   directory with DVC"`)
+   look at `data/external.dvc` to see the metadata file that DVC created
+4. Commit the changes to Git (`git commit -m "Start tracking data directory with
+   DVC"`)
 
 Now that the data is part of the DVC cache, we can set up a remote for
 duplicating it. Just like we `git push` our local Git repository to GitHub,
@@ -143,12 +142,39 @@ here](https://github.com/iterative/example-pokemon-classifier/blob/main/src/trai
 Just like we could run the cells in our notebook one-by-one, we can now run the
 modules successively from our command line. But we can also create a `dvc.yaml`
 file that defines a pipeline for us. We can then run the entire pipeline with a
-single command.
+single command. Your `dvc.yaml` should look something like this:
+
+```yaml
+stages:
+  data_preprocess:
+    cmd: python3 src/data_preprocess.py --params params.yaml
+    deps:
+    - [dependency 1]
+    - [dependency 2]
+    - ...
+    outs:
+    - [output 1]
+    - [output 2]
+    - ...
+    params:
+    - base
+    - [params section]
+  data_load:
+    ...
+  train:
+    ...
+  evaluate:
+    ...
+```
 
 1. Create a `dvc.yaml` file and set up the stages, their dependencies, and
    outputs
    ([docs](https://dvc.org/doc/user-guide/project-structure/dvcyaml-files#stages))
-1. Reproduce the pipeline with `dvc repro`.
+2. Check the pipeline DAG with `dvc dag`
+3. Reproduce the pipeline with `dvc repro`
+4. Add `outputs/metrics.yaml` [as
+   metrics](https://dvc.org/doc/command-reference/metrics) so that DVC can
+   easily compare them across experiments in the next step.
 
 [If you'd like an example, check my implementation for `dvc.yaml`
 here](https://github.com/iterative/example-pokemon-classifier/blob/main/dvc.yaml)
@@ -159,11 +185,16 @@ With our pipeline in place, we cannot only reproduce a pipeline run with a
 single command; we can also run entirely new experiments. Let's explore two
 ways:
 
-1. Update a parameter in `params.yaml` (for example: `type: 'dragon'`) and use
-   `dvc repro` to trigger a new model training
+1. Update a parameter in `params.yaml` (for example: `type: 'Bug'`) and use `dvc
+   repro` to trigger a new pipeline run.
 2. Run a new experiment with `dvc exp run` and use the `-S` option to set a
-   parameter (for example: `dvc exp run -S 'base.pokemon_type_train="dragon"'`).
+   parameter (for example: `dvc exp run -S 'base.pokemon_type_train="Dragon"'`).
 3. Compare the experiments with `dvc exp show`.
+
+As you can see, only the second method actually generates a new experiment.
+Using `dvc repro` overwrites the active workspace. Therefore it's recommended to
+use `dvc exp run`. Once you're happy with the results of an experiment, you can
+use `dvc exp apply` to apply it to the workspace.
 
 If you want to move beyond the command line for your experiments, take a look at
 [the DVC extension for Visual Studio
