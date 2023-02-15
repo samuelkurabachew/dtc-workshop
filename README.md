@@ -224,16 +224,16 @@ utilizes GitHub Actions (GitLab and Bitbucket equivalents also work).
                 echo "The workflow is working!"
 
    ```
-4. Create a personal access token for the GitHub repository and add it as an environment variable to your secrets ([docs](https://cml.dev/doc/self-hosted-runners?tab=GitHub#personal-access-token))
-5. Add any other environment variables CML will need to retrieve the datasets from
-   your DVC remote to your GitHub secrets (such as `AWS_ACCES_KEY_ID` and `AWS_SECRET_ACCESS_KEY` for an S3 remote).
-
-    ```yaml
+4. Create a personal access token for the GitHub repository and add it as an
+   environment variable to your secrets
+   ([docs](https://cml.dev/doc/self-hosted-runners?tab=GitHub#personal-access-token))
+     ```yaml
     env:
         repo_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
     ```
-
+5. Add any other environment variables CML will need to access the DVC remote to
+   your GitHub secrets (such as `AWS_ACCES_KEY_ID` and `AWS_SECRET_ACCESS_KEY`
+   for an S3 remote).
 6. Adapt the workflow to run `dvc repo` and publish the results as a PR. [See an
    example
    here](https://github.com/iterative/cml_dvc_case/blob/master/.github/workflows/cml.yaml).
-
