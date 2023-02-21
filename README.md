@@ -177,7 +177,7 @@ stages:
    easily compare them across experiments in the next step.
 
 [If you'd like an example, check my implementation for `dvc.yaml`
-here](https://github.com/iterative/example-pokemon-classifier/blob/main/dvc.yaml)
+here](https://github.com/RCdeWit/dtc-workshop/blob/solution/dvc.yaml)
 
 ### Run experiments
 
