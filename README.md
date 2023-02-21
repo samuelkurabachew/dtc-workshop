@@ -49,7 +49,7 @@ the appropriate requirements when you are using a Mac with an M1 CPU or later.
 In case you are using a different system, you will need to replace these with
 `tensorflow`.
 
-## Workshop - part 1
+## Workshop part 1: DVC
 
 Now that we have the notebook up and running, go through the cells to see if
 everything works. If it does, you should get a model that generates predictions
@@ -200,7 +200,7 @@ If you want to move beyond the command line for your experiments, take a look at
 [the DVC extension for Visual Studio
 Code](https://marketplace.visualstudio.com/items?itemName=Iterative.dvc).
 
-## Workshop - part 2
+## Workshop part 2 (optional): CML and cloud runners
 
 Now that we can run experiments with our pipeline, let's take our model training
 to the cloud! For this second part, we'll be using [CML](https://cml.dev), which
@@ -234,6 +234,8 @@ utilizes GitHub Actions (GitLab and Bitbucket equivalents also work).
 5. Add any other environment variables CML will need to access the DVC remote to
    your GitHub secrets (such as `AWS_ACCES_KEY_ID` and `AWS_SECRET_ACCESS_KEY`
    for an S3 remote).
-6. Adapt the workflow to run `dvc repo` and publish the results as a PR. [See an
-   example
-   here](https://github.com/iterative/cml_dvc_case/blob/master/.github/workflows/cml.yaml).
+6. Adapt the workflow to provision a remote runner (e.g. an AWS instance) to run
+   the model training on. [Find a guide
+   here](https://iterative.ai/blog/CML-runners-saving-models-1/).
+6. Adapt the workflow to run `dvc repo` and publish the results as a PR. [Find a
+   guide here](https://iterative.ai/blog/CML-runners-saving-models-2/).
