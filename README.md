@@ -136,7 +136,7 @@ Once we're done, we should be able to run the module from your command line:
 `python3 src/train.py --params params.yaml`. 
 
 [If you'd like an example, check my implementation for `train.py`
-here](https://github.com/iterative/example-pokemon-classifier/blob/main/src/train.py).
+here](https://github.com/RCdeWit/dtc-workshop/blob/solution/src/train.py).
 
 ### Create pipeline
 Just like we could run the cells in our notebook one-by-one, we can now run the
